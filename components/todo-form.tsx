@@ -1,7 +1,10 @@
+"use client";
+import { addTodo } from "@/app/todos/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
+import { useRef } from "react";
 
 function FormContent() {
   return (
@@ -21,10 +24,18 @@ function FormContent() {
 }
 
 export function TodoForm() {
+  const formRef = useRef<HTMLFormElement>(null);
   return (
     <Card>
       <CardContent className="p-3">
-        <form className="flex gap-4">
+        <form
+          ref={formRef}
+          className="flex gap-4"
+          action={async (data) => {
+            await addTodo(data);
+            formRef.current?.reset();
+          }}
+        >
           <FormContent />
         </form>
       </CardContent>
