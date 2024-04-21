@@ -1,7 +1,19 @@
 import { TodoList } from "@/components/todo-list";
 import { Separator } from "@/components/ui/separator";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export default async function TodosPage() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/login");
+  }
+
   const todos = ["This is a todo"];
 
   return (
