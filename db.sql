@@ -13,4 +13,4 @@ create policy "Individuals can view their own todos. " on todos for
 create policy "Individuals can update their own todos." on todos for
     update using ((select auth.uid()) = user_id);
 create policy "Individuals can delete their own todos." on todos for
-    delete using ((select auth.uid()) = user_id);
+    delete using ((select auth.uid()) = user_id); 
