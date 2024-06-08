@@ -1,3 +1,5 @@
+"use client";
+import { deleteTodo, updateTodo } from "@/app/todos/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,10 +20,22 @@ export function TodoCard({ todo }: { todo: Todo }) {
     <Card className={cn("w-full")}>
       <CardContent className="flex items-start gap-3 p-3">
         <span className="size-10 flex items-center justify-center">
-          <Checkbox />
+          <Checkbox
+            checked={Boolean(todo.is_complete)}
+            onCheckedChange={async (val) => {
+              if (val === "indeterminate") return;
+              await updateTodo({ ...todo, is_complete: val });
+            }}
+          />
         </span>
         <p className={cn("flex-1 pt-2 min-w-0 break-words")}>{todo.task}</p>
-        <Button variant="ghost" size="icon">
+        <Button
+          formAction={async (data) => {
+            await deleteTodo(todo.id);
+          }}
+          variant="ghost"
+          size="icon"
+        >
           <Trash2 className="h-5 w-5" />
           <span className="sr-only">Delete Todo</span>
         </Button>
